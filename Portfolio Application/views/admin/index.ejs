@@ -1,0 +1,30 @@
+<%- include('../partials/header') -%>
+<div class="container">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Image</th>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Actions</th>
+        <th scope="col">Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% courses.forEach((course)=>{ %>
+      <tr>
+        <td>
+            <img src="<%= course.imageUrl %>" class="img-fluid" alt="Responsive image">
+        </td>
+        <td><%= course.title %></td>
+        <td><%= course.description %></td>
+        <td>
+          <a href="/admin/show/<%= course._id %>" class="btn btn-dark">Details</a>
+        </td>
+        <td>Posted Date: <%= moment(course.date).format("MM-DD-YYYY") %></td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+<%- include('../partials/footer') -%>

@@ -1,0 +1,14 @@
+<%- include('../partials/header') -%>
+<div class="container">
+  <div class="card text-center">
+    <div class="card-header">Title: <%= course.title %></div>
+    <div class="card-body">
+      <p class="card-text">Description: <%= course.description %></p>
+      <p class="card-text">Service: <%= course.service %></p>
+      <p class="card-text">Client: <%= course.client %></p>
+      <p class="card-text">Course: <%= course.projectUrl %></p>
+    </div>
+    <div class="card-footer text-muted">Posted Date: <%= moment(course.date).format("MM-DD-YYYY") %></div>
+  </div>
+</div>
+<%- include('../partials/footer') -%>

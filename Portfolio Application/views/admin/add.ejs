@@ -1,0 +1,62 @@
+<%- include('../partials/header') -%>
+<div class="container">
+<form method="POST" action="/admin/add" class=" mb-5">
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input type="text" class="form-control" name="title" placeholder="Enter Title"/>
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <input type="text" class="form-control" name="description" placeholder="Enter Description"
+    />
+  </div>
+  <div class="form-group">
+    <label for="service">Service</label>
+    <input type="service" class="form-control" name="service" placeholder="Enter Service"
+    />
+  </div>
+  <div class="form-group">
+    <label for="client">Client</label>
+    <input type="text" class="form-control" name="client" placeholder="Enter Client"
+    />
+  </div>
+  <div class="form-group">
+    <label for="url">Project url</label>
+    <input type="text" class="form-control" name="projectUrl" placeholder="Enter ProjectUrl"/>
+  </div>
+  <div class="form-group">
+    <input type="file" class="form-control" name="imageUrl" placeholder="Enter File" />
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Service</th>
+        <th scope="col">Client</th>
+        <th scope="col">ProjectUrl</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <% courses.forEach((course)=>{ %>
+    <tbody>
+      <tr>
+        <th><%= course.title %></th>
+        <td><%= course.description %></td>
+        <td><%= course.service %></td>
+        <td><%= course.client %></td>
+        <td><%= course.projectUrl %></td>
+        <td>
+            <a class="btn btn-danger" href="#">Delete</a>
+        </td>
+        <td>
+            <a class="btn btn-success" href="#">Edit</a>
+        </td>
+      </tr>
+    </tbody>
+    <% }) %>
+  </table>
+</div>
+<%- include('../partials/footer') -%>
