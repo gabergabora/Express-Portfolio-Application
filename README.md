@@ -1,2 +1,6 @@
 # Express-Portfolio-Application
-Express-Mongo-Application 
+# Resources
+Express,Mongo,Multer,Router,Moment,Sessions,Express Validator
+Back End application With view-engine EJS
+
+
