@@ -1,5 +1,6 @@
 <%- include('../partials/header') -%>
 <div class="container">
+  <h1>Added Course</h1>
 <form method="POST" action="/admin/add" class=" mb-5">
   <div class="form-group">
     <label for="title">Title</label>
@@ -49,10 +50,10 @@
         <td><%= course.client %></td>
         <td><%= course.projectUrl %></td>
         <td>
-            <a class="btn btn-danger" href="#">Delete</a>
+            <a class="btn btn-danger" href="/admin/delete/<%= course._id %>" data-id="<%=course._id%>">Delete</a>
         </td>
         <td>
-            <a class="btn btn-success" href="#">Edit</a>
+            <a class="btn btn-success" href="/admin/edit/<%= course._id %>">Edit</a>
         </td>
       </tr>
     </tbody>
