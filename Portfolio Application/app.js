@@ -3,11 +3,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const dotenv =require ('dotenv');
-const mongo = require('mongodb');
 const db = require('monk')('localhost/portfolio');
-const multer= require('multer');
-const upload = multer({ dest: 'uploads/' })
-
+const flash=require('connect-flash');
 const app = express();
 
 
@@ -30,6 +27,13 @@ app.use(session({
     saveUninitialized: true,
     resave: true
 }));
+
+// Express Messages Middleware
+app.use(flash());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
 
 // Make our db accessible to our router
 app.use(function(req,res,next){

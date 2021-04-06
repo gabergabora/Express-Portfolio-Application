@@ -13,7 +13,13 @@ router.get("/add", (req, res, next) => {
   });
 });
 
-router.post("/add", (req, res, next) => {
+router.post("/add",
+  body("title", "Title field is required").notEmpty(),
+  body("description", "Description field is required").notEmpty(),
+  body("service", "Service field is required").notEmpty(),
+  body("client", "Client field is required").notEmpty(),
+  body("projectUrl", "projectUrl field is required").notEmpty(),
+(req, res, next) => {
   const title = req.body.title;
   const description = req.body.description;
   const service = req.body.service;
@@ -21,15 +27,9 @@ router.post("/add", (req, res, next) => {
   const projectUrl = req.body.projectUrl;
   const date = new Date();
 
-  body("title", "Title field is required").notEmpty();
-  body("description", "Description field is required").notEmpty();
-  body("service", "Service field is required").notEmpty();
-  body("client", "Client field is required").notEmpty();
-  body("projectUrl", "projectUrl field is required").notEmpty();
-
   let errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors);
+    return res.status(400).json({ errors: errors.array() });
   } else {
     const courses = db.get("courses");
     courses.insert(
@@ -70,23 +70,23 @@ router.get("/edit/:id", (req, res, next) => {
   });
 });
 
-router.post("/edit/:id", (req, res, next) => {
+router.post("/edit/:id", 
+  body("title", "Title field is required").not().isEmpty(),
+  body("description", "Description field is required").not().isEmpty(),
+  body("service", "Service field is required").not().isEmpty(),
+  body("client", "Client field is required").not().isEmpty(),
+  body("projectUrl", "projectUrl field is required").not().isEmpty(),
+(req, res, next) => {
   const title = req.body.title;
   const description = req.body.description;
   const service = req.body.service;
   const client = req.body.client;
   const projectUrl = req.body.projectUrl;
 
-  body("title", "Title field is required").notEmpty();
-  body("description", "Description field is required").notEmpty();
-  body("service", "Service field is required").notEmpty();
-  body("client", "Client field is required").notEmpty();
-  body("projectUrl", "projectUrl field is required").notEmpty();
-
   let errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    console.log(errors);
+  if (errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   } else {
     const courses = db.get("courses");
     courses.updateOne(
@@ -110,14 +110,14 @@ router.post("/edit/:id", (req, res, next) => {
 
 router.delete("/delete/:id", (req, res) => {
   const courses = db.get("courses");
-  courses.findByIdAndDelete(req.params.id,(error,docs)=>{
-    if(error){
-      console.log(error)
-    }else{
-      console.log(docs)
-    }
-  })
-    
+
+  courses.remove(req.params.id)
+    .then((course) => {
+      res.redirect("");
+    })
+    .catch((error) => {
+      res.redirect("/");
+    });
 });
 
 module.exports = router;
