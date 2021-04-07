@@ -24,11 +24,15 @@
         in totam non, numquam deserunt placeat assumenda soluta. Molestias,
         quibusdam?
       </p>
-        <a class="btn btn-primary btn-lg" href="/admin/add">Add Project</a>
-        <a class="btn btn-primary btn-lg" href="/">Home Page</a>
-        <a class="btn btn-primary btn-lg" href="/">Logout</a>
-        <a class="btn btn-primary btn-lg" href="/users/register">Register Page</a>
-        <a class="btn btn-primary btn-lg" href="/users/login">Login Page</a>
+      <% if (user){ %>
+      <a class="btn btn-primary btn-lg" href="/admin/add">Add Project</a>
+      <a class="btn btn-primary btn-lg" href="/">Home Page</a>
+      <a class="btn btn-primary btn-lg" href="/users/logout">Logout</a>
+      <h5 class="text-right">Username: <span class="badge badge-secondary"><%= user.name %></span></h5>
+      <% } else { %>
+      <a class="btn btn-primary btn-lg" href="/users/register">Register Page</a>
+      <a class="btn btn-primary btn-lg" href="/users/login">Login Page</a>
+      <% } %>
     </div>
   </body>
 </html>

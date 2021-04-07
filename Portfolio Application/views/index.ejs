@@ -10,10 +10,11 @@
     <thead>
       <tr>
         <th scope="col">Image</th>
-        <th scope="col">Client</th>
         <th scope="col">Title</th>
+        <th scope="col">Client</th>
         <th scope="col">Actions</th>
-        <th scope="col">Date</th>
+        <th scope="col">Posted</th>
+        <th scope="col">Author</th>
       </tr>
     </thead>
     <tbody>
@@ -26,14 +27,17 @@
             alt="Responsive image"
           />
         </td>
-        <td><h5><%= course.title %></h5></td>
-        <td><h5><%= course.client %></h5></td>
+        <td><h6><%= course.title %></h6></td>
+        <td><h6><%= course.client %></h6></td>
         <td>
           <a href="/admin/show/<%= course.id %>" class="btn btn-dark"
             >Details</a
           >
         </td>
-        <td>Posted Date: <%= moment(course.date).format("MM-DD-YYYY") %></td>
+        <td><%= moment(course.date).format("MM-DD-YYYY") %></td>
+        <td>
+          <%= course.author %>
+        </td>
       </tr>
       <% }) %>
     </tbody>

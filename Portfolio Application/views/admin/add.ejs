@@ -69,8 +69,6 @@
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 
-  
-
 <table class="table mb-5">
   <tr>
     <th scope="col">Client</th>
@@ -80,6 +78,7 @@
     <th scope="col">Edit</th>
 </tr>
     <% courses.forEach((course)=>{ %>
+      <% if(user.id==course.author) { %>
     <tbody>
       <tr>
         <td>
@@ -87,11 +86,13 @@
         </td>
         <td>
           <a href="/admin/show/<%= course.id %>" class="btn btn-dark"
-            >Details</a
-          >
+            >Details
+          </a>
         </td>
-        <td>Posted Date: <%= moment(course.date).format("MM-DD-YYYY") %></td>
-        <td>
+        <td
+        >Posted Date: <%= moment(course.date).format("MM-DD-YYYY") %>
+      </td>
+      <td>
         <form action="/admin/delete/<%=course.id%>?_method=DELETE" method="POST">
           <div class="form-group">
             <input type="hidden" name="_method" value="DELETE">
@@ -104,6 +105,9 @@
       </td>
       </tr>
     </tbody>
+    <% } else { %>
+
+      <% } %>
     <% }) %>
   </table>
 </div>

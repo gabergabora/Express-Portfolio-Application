@@ -33,7 +33,8 @@ router.post(
       client: req.body.client,
       projectUrl: req.body.projectUrl,
       date: req.body.date,
-      mainimage:req.body.mainimage
+      mainimage:req.body.mainimage,
+      author: req.user._id,
     });
     courses
       .save(courses)

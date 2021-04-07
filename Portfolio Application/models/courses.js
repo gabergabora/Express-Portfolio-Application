@@ -29,5 +29,9 @@ const coursesSchema = new mongoose.Schema({
         type:Date,
         default:Date.now
     },
+    author: {
+        type: String,
+        required: true
+    },
 });
 module.exports=mongoose.model('Courses',coursesSchema)
