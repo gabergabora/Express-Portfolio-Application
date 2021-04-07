@@ -1,0 +1,6 @@
+.img-fluid{
+    width:100px
+}
+.table td, .table th {
+    vertical-align:baseline;
+}
