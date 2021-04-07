@@ -1,7 +1,7 @@
 <%- include('../partials/header') -%>
 
 <h1>Added Course</h1>
-<form method="POST" action="/admin/edit/<%= course._id %>" class=" mb-5">
+<form method="POST" action="/admin/edit/<%= course.id %>" class=" mb-5">
   <div class="form-group">
     <label for="title">Title</label>
     <input type="text" class="form-control" value="<%= course.title %>" name="title" placeholder="Enter Title"/>

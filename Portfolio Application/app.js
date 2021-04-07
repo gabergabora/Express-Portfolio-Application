@@ -2,13 +2,14 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const dotenv =require ('dotenv');
-const db = require('monk')('localhost/portfolio');
 const flash=require('connect-flash');
+const dotenv=require('dotenv');
+const connectDatabase=require('./config/database');
+const methodOverride=require('method-override');
 const app = express();
 
-
-dotenv.config({path:'./config/config.env'})
+dotenv.config({path:'./config/config.env'});
+connectDatabase()
 
 
 app.locals.moment = require('moment');
@@ -19,6 +20,7 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Express Session
@@ -35,11 +37,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-// Make our db accessible to our router
-app.use(function(req,res,next){
-  req.db = db;
-  next();
-});
 
 //routes files
 const indexRouter=require('./routes/index');
@@ -52,4 +49,3 @@ app.listen(PORT,()=>{
     console.log(`Server started on port ${process.env.PORT}`)
 })
 
-module.exports = app;

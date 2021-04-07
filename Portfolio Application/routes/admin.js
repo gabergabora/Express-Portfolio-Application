@@ -1,123 +1,149 @@
 const express = require("express");
-const multer = require("multer");
-const upload = multer({ dest: "./public/images" });
-const db = require("monk")("localhost/portfolio");
+const Courses = require("../models/courses");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 
 router.get("/add", (req, res, next) => {
-  const db = req.db;
-  const courses = db.get("courses");
-  courses.find({}, {}, (err, courses) => {
-    res.render("admin/add", { courses: courses });
-  });
+  Courses.find()
+    .then((courses) => {
+      res.render("admin/add", { courses: courses });
+    })
+    .catch((error) => {
+      res.json(error);
+    });
 });
 
-router.post("/add",
+router.post(
+  "/add",
   body("title", "Title field is required").notEmpty(),
   body("description", "Description field is required").notEmpty(),
   body("service", "Service field is required").notEmpty(),
   body("client", "Client field is required").notEmpty(),
   body("projectUrl", "projectUrl field is required").notEmpty(),
-(req, res, next) => {
-  const title = req.body.title;
-  const description = req.body.description;
-  const service = req.body.service;
-  const client = req.body.client;
-  const projectUrl = req.body.projectUrl;
-  const date = new Date();
-
-  let errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  } else {
-    const courses = db.get("courses");
-    courses.insert(
-      {
-        title: title,
-        description: description,
-        service: service,
-        client: client,
-        projectUrl: projectUrl,
-        date: date,
-      },
-      (error, post) => {
-        if (error) {
-          console.log(error);
-        } else {
-          res.redirect("/");
-        }
-      }
-    );
+  body("mainimage", "Main Image field is required").notEmpty(),
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.json({errors: errors.array()})
+    }
+    const courses = new Courses({
+      title: req.body.title,
+      description: req.body.description,
+      service: req.body.service,
+      client: req.body.client,
+      projectUrl: req.body.projectUrl,
+      date: req.body.date,
+      mainimage:req.body.mainimage
+    });
+    courses
+      .save(courses)
+      .then((course) => {
+        res.redirect("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
-});
+);
 
 router.get("/show/:id", (req, res, next) => {
-  const courses = db.get("courses");
-  courses.findOne(req.params.id, (error, course) => {
-    res.render("admin/details", {
-      course: course,
+  Courses.findOne({ _id: req.params.id })
+    .then((course) => {
+      res.render("admin/details", { course: course });
+    })
+    .catch((error) => {
+      res.json(error);
+      console.log(error);
     });
-  });
 });
 
 router.get("/edit/:id", (req, res, next) => {
-  const courses = db.get("courses");
-  courses.findOne(req.params.id, (error, course) => {
-    res.render("admin/edit", {
-      course: course,
-    });
-  });
-});
-
-router.post("/edit/:id", 
-  body("title", "Title field is required").not().isEmpty(),
-  body("description", "Description field is required").not().isEmpty(),
-  body("service", "Service field is required").not().isEmpty(),
-  body("client", "Client field is required").not().isEmpty(),
-  body("projectUrl", "projectUrl field is required").not().isEmpty(),
-(req, res, next) => {
-  const title = req.body.title;
-  const description = req.body.description;
-  const service = req.body.service;
-  const client = req.body.client;
-  const projectUrl = req.body.projectUrl;
-
-  let errors = validationResult(req);
-
-  if (errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  } else {
-    const courses = db.get("courses");
-    courses.updateOne(
-      {
-        title: title,
-        description: description,
-        service: service,
-        client: client,
-        projectUrl: projectUrl,
-      },
-      (error, post) => {
-        if (error) {
-          console.log(error);
-        } else {
-          res.redirect("/");
-        }
-      }
-    );
-  }
-});
-
-router.delete("/delete/:id", (req, res) => {
-  const courses = db.get("courses");
-
-  courses.remove(req.params.id)
+  Courses.findOne({ _id: req.params.id })
     .then((course) => {
-      res.redirect("");
+      res.render("admin/edit", {
+        course: course,
+      });
     })
     .catch((error) => {
+      res.json(error);
       res.redirect("/");
     });
 });
+
+router.post("/edit/:id", (req, res, next) => {
+  Courses.findByIdAndUpdate(req.params.id, {
+    $set: {
+      title: req.body.title,
+      description: req.body.description,
+      service: req.body.service,
+      client: req.body.client,
+      projectUrl: req.body.projectUrl,
+    },
+  })
+    .then((course) => {
+      res.redirect("/");
+    })
+    .catch((error) => {
+      res.json(error);
+    });
+});
+
+router.delete("/delete/:id", (req, res, next) => {
+  Courses.findByIdAndDelete({ _id: req.params.id })
+    .then((job) => {
+      res.redirect("/");
+    })
+    .catch((error) => {
+      res.json(error);
+    });
+});
+
+
+router.post('/addcomment', function(req, res, next) {
+  // Get Form Values
+  const name = req.body.name;
+  const email= req.body.email;
+  const body = req.body.body;
+  const postid= req.body.postid;
+  const commentdate = new Date();
+
+	if(errors){
+		const posts = db.get('posts');
+		posts.findById(postid, function(err, post){
+			res.render('show',{
+				"errors": errors,
+				"post": post
+			});
+		});
+	} else {
+		const comment = {
+			"name": name,
+			"email": email,
+			"body": body,
+			"commentdate": commentdate
+		}
+
+		const posts = db.get('posts');
+
+		posts.update({
+			"_id": postid
+		},{
+			$push:{
+				"comments": comment
+			}
+		}, function(err, doc){
+			if(err){
+				throw err;
+			} else {
+				req.flash('success', 'Comment Added');
+				res.location('/posts/show/'+postid);
+				res.redirect('/posts/show/'+postid);
+			}
+		});
+	}
+});
+
+
+
 
 module.exports = router;
