@@ -3,7 +3,7 @@ const Courses = require("../models/courses");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 
-router.get("/add", (req, res, next) => {
+router.get("/add",ensureAuthenticated ,(req, res, next) => {
   Courses.find()
     .then((courses) => {
       res.render("admin/add", { courses: courses });
@@ -46,7 +46,7 @@ router.post(
   }
 );
 
-router.get("/show/:id", (req, res, next) => {
+router.get("/show/:id",(req, res) => {
   Courses.findOne({ _id: req.params.id })
     .then((course) => {
       res.render("admin/details", { course: course });
@@ -57,7 +57,7 @@ router.get("/show/:id", (req, res, next) => {
     });
 });
 
-router.get("/edit/:id", (req, res, next) => {
+router.get("/edit/:id", (req, res,next) => {
   Courses.findOne({ _id: req.params.id })
     .then((course) => {
       res.render("admin/edit", {
@@ -70,7 +70,7 @@ router.get("/edit/:id", (req, res, next) => {
     });
 });
 
-router.post("/edit/:id", (req, res, next) => {
+router.post("/edit/:id", (req, res,next) => {
   Courses.findByIdAndUpdate(req.params.id, {
     $set: {
       title: req.body.title,
@@ -88,7 +88,7 @@ router.post("/edit/:id", (req, res, next) => {
     });
 });
 
-router.delete("/delete/:id", (req, res, next) => {
+router.delete("/delete/:id", (req, res,next) => {
   Courses.findByIdAndDelete({ _id: req.params.id })
     .then((job) => {
       res.redirect("/");
@@ -98,5 +98,13 @@ router.delete("/delete/:id", (req, res, next) => {
     });
 });
 
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  } else {
+    res.redirect('/users/login');
+  }
+}
 
 module.exports = router;

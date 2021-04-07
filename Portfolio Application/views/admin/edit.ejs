@@ -1,32 +1,70 @@
 <%- include('../partials/header') -%>
 
 <h1>Added Course</h1>
-<form method="POST" action="/admin/edit/<%= course.id %>" class=" mb-5">
+<form method="POST" action="/admin/edit/<%= course.id %>" class="mb-5">
   <div class="form-group">
     <label for="title">Title</label>
-    <input type="text" class="form-control" value="<%= course.title %>" name="title" placeholder="Enter Title"/>
+    <input
+      type="text"
+      class="form-control"
+      value="<%= course.title %>"
+      name="title"
+      placeholder="Enter Title"
+      id="title"
+    />
   </div>
   <div class="form-group">
     <label for="description">Description</label>
-    <input type="text" class="form-control" value="<%= course.description %>" name="description" placeholder="Enter Description"
+    <input
+      type="text"
+      class="form-control"
+      value="<%= course.description %>"
+      name="description"
+      placeholder="Enter Description"
+      id="description"
     />
   </div>
   <div class="form-group">
     <label for="service">Service</label>
-    <input type="service" class="form-control" value="<%= course.service %>" name="service" placeholder="Enter Service"
+    <input
+      type="service"
+      class="form-control"
+      value="<%= course.service %>"
+      name="service"
+      placeholder="Enter Service"
+      id="service"
     />
   </div>
   <div class="form-group">
     <label for="client">Client</label>
-    <input type="text" class="form-control" value="<%= course.client %>" name="client" placeholder="Enter Client"
+    <input
+      type="text"
+      class="form-control"
+      value="<%= course.client %>"
+      name="client"
+      placeholder="Enter Client"
+      id="client"
     />
   </div>
   <div class="form-group">
     <label for="url">Project url</label>
-    <input type="text" class="form-control" value="<%= course.projectUrl %>" name="projectUrl" placeholder="Enter ProjectUrl"/>
+    <input
+      type="text"
+      class="form-control"
+      value="<%= course.projectUrl %>"
+      name="projectUrl"
+      placeholder="Enter ProjectUrl"
+      id="url"
+    />
   </div>
   <div class="form-group">
-    <input type="file" class="form-control" value="<%= course.imageUrl %>" name="imageUrl" placeholder="Enter File" />
+    <input
+      type="file"
+      class="form-control"
+      value="<%= course.imageUrl %>"
+      name="mainimage"
+      placeholder="Enter File"
+    />
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>

@@ -7,6 +7,8 @@ const dotenv=require('dotenv');
 const connectDatabase=require('./config/database');
 const methodOverride=require('method-override');
 const app = express();
+const passport = require('passport');
+const Courses = require('./models/courses')
 
 dotenv.config({path:'./config/config.env'});
 connectDatabase()
@@ -37,12 +39,33 @@ app.use(function (req, res, next) {
   next();
 });
 
+require('./middleware/passport')(passport);
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+// Passport Config
+app.get('*', function (req, res, next) {
+  res.locals.user = req.user || null;
+  next();
+});
+
+app.get("/", function (req, res) {
+  Courses.find()
+    .then((courses) => {
+      res.render("index", { courses: courses });
+    })
+    .catch((error) => {
+      res.json(error);
+    });
+});
+
 
 //routes files
-const indexRouter=require('./routes/index');
-const adminRouter=require('./routes/admin')
-app.use(indexRouter);
+const adminRouter=require('./routes/admin');
+const userRouter=require('./routes/users');
+
 app.use('/admin',adminRouter);
+app.use('/users',userRouter);
 
 const PORT=process.env.PORT;
 app.listen(PORT,()=>{
