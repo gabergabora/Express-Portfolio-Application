@@ -3,10 +3,10 @@
   <div class="card text-center">
     <div class="card-header">Title: <%= course.title %></div>
     <div class="card-body">
-      <h5 class="card-text">Description: <%= course.description %></h5>
-      <h5 class="card-text">Service: <%= course.service %></h5>
-      <h5 class="card-text">Client: <%= course.client %></h5>
-      <h5 class="card-text">Course: <%= course.projectUrl %></h5>
+      <h5 >Description: <%= course.description %></h5>
+      <h5 >Service: <%= course.service %></h5>
+      <h5 >Client: <%= course.client %></h5>
+      <h5 >Course: <a href="#" class="badge badge-dark"><%= course.projectUrl %></a></h5>
     </div>
     <div class="card-footer text-muted">Posted Date: <%= moment(course.date).format("MM-DD-YYYY") %></div>
   </div>

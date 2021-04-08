@@ -3,8 +3,8 @@ const Courses = require("../models/courses");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 
-router.get("/add",ensureAuthenticated ,(req, res, next) => {
-  Courses.find()
+router.get("/add",ensureAuthenticated ,async (req, res, next) => {
+  await Courses.find()
     .then((courses) => {
       res.render("admin/add", { courses: courses });
     })
@@ -13,20 +13,19 @@ router.get("/add",ensureAuthenticated ,(req, res, next) => {
     });
 });
 
-router.post(
-  "/add",
+router.post("/add",
   body("title", "Title field is required").notEmpty(),
   body("description", "Description field is required").notEmpty(),
   body("service", "Service field is required").notEmpty(),
   body("client", "Client field is required").notEmpty(),
   body("projectUrl", "projectUrl field is required").notEmpty(),
   body("mainimage", "Main Image field is required").notEmpty(),
-  (req, res, next) => {
+  async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.json({errors: errors.array()})
     }
-    const courses = new Courses({
+     const courses = new Courses({
       title: req.body.title,
       description: req.body.description,
       service: req.body.service,
@@ -47,19 +46,18 @@ router.post(
   }
 );
 
-router.get("/show/:id",(req, res) => {
-  Courses.findOne({ _id: req.params.id })
+router.get("/show/:id",async (req, res) => {
+ await Courses.findOne({ _id: req.params.id })
     .then((course) => {
       res.render("admin/details", { course: course });
     })
     .catch((error) => {
-      res.json(error);
-      console.log(error);
+     res.json(error);
     });
 });
 
-router.get("/edit/:id", (req, res,next) => {
-  Courses.findOne({ _id: req.params.id })
+router.get("/edit/:id", async (req, res,next) => {
+ await Courses.findOne({ _id: req.params.id })
     .then((course) => {
       res.render("admin/edit", {
         course: course,
@@ -71,8 +69,8 @@ router.get("/edit/:id", (req, res,next) => {
     });
 });
 
-router.post("/edit/:id", (req, res,next) => {
-  Courses.findByIdAndUpdate(req.params.id, {
+router.post("/edit/:id", async (req, res,next) => {
+ await Courses.findByIdAndUpdate(req.params.id, {
     $set: {
       title: req.body.title,
       description: req.body.description,
@@ -89,8 +87,8 @@ router.post("/edit/:id", (req, res,next) => {
     });
 });
 
-router.delete("/delete/:id", (req, res,next) => {
-  Courses.findByIdAndDelete({ _id: req.params.id })
+router.delete("/delete/:id", async (req, res,next) => {
+ await  Courses.findByIdAndDelete({ _id: req.params.id })
     .then((job) => {
       res.redirect("/");
     })

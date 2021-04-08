@@ -15,9 +15,9 @@ router.get("/login", (req, res,next) => {
 
 router.post(
    "/register",
-  body("name", "Name field is required").notEmpty(),
+  body("name", "Name field is required").isLength({min:5}),
   body("email", "Email field is required").isEmail(),
-  body("password", "Password field is required").notEmpty(),
+  body("password", "Password field is required").isLength({min:5}),
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
