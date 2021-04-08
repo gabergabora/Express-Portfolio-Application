@@ -2,12 +2,12 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const flash=require('connect-flash');
 const dotenv=require('dotenv');
 const connectDatabase=require('./config/database');
 const methodOverride=require('method-override');
 const app = express();
 const passport = require('passport');
+const flash = require('connect-flash');
 const Courses = require('./models/courses')
 
 dotenv.config({path:'./config/config.env'});
@@ -32,6 +32,12 @@ app.use(session({
     resave: true
 }));
 
+// Express Messages Middleware
+app.use(flash());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
 
 require('./middleware/passport')(passport);
 // Passport Middleware
@@ -42,6 +48,7 @@ app.get('*', function (req, res, next) {
   res.locals.user = req.user || null;
   next();
 });
+
 
 app.get("/", function (req, res) {
   Courses.find()
