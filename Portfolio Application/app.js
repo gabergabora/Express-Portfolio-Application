@@ -32,12 +32,6 @@ app.use(session({
     resave: true
 }));
 
-// Express Messages Middleware
-app.use(flash());
-app.use(function (req, res, next) {
-  res.locals.messages = require('express-messages')(req, res);
-  next();
-});
 
 require('./middleware/passport')(passport);
 // Passport Middleware
